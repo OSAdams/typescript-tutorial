@@ -10,3 +10,11 @@ let album; // Any type of value can be assigned to the variable. This is how you
 album = 'Van Halen';
 album = true;
 album = 1942;
+const sum = (a, b) => a + b;
+let album2;
+album2 = 'Van Halen';
+// album2 = true; 'invalude, must be a string or number;
+let postId; // value must be a string or a number -- '123' 123
+let isActive; // value must be a number or a boolean -- 123 true 'hello world'
+let re = /\w+/g; // select all words globally; INFERRED RegEx type;
+let re2 = /\w+/g; // EXPLICITLY assigned RegEx type value
