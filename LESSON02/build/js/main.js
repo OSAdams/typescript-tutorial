@@ -1,6 +1,12 @@
 "use strict";
-const username = "falcocodes@osastack.dev";
-console.log(username);
-let a = 12, b = 6, c = 2;
-console.log(a / b);
-console.log(c * b);
+let myName = 'Owen'; // explicitly declared type is string {: string}
+const myName2 = 'Adams'; // inferred type is string
+// myName = 42; 'number is not assignable to type 'string''
+let meaningOfLife;
+let isLoading;
+meaningOfLife = 42; // type is number, value must be number
+isLoading = true; // type is boolean, value must be boolean
+let album; // Any type of value can be assigned to the variable. This is how you 'defeat' typescript
+album = 'Van Halen';
+album = true;
+album = 1942;
