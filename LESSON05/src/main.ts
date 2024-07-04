@@ -1,113 +1,37 @@
-// Type Aliases
-type stringOrNumber = string | number;
+// Type Assertions
+// Sometimes you will have information about the type of value that TypeScript can't know about
+// We're telling the typescript compiler that we have more detail about the type
 
-type stringOrNumberArray = (string | number)[];
+type One = string;
+type Two = string | number;
+type Three = 'hello';
 
-type Guitarist = {
-    name?: string,
-    active: boolean,
-    albums: stringOrNumberArray
-};
+// convert to more or less specifics
+let a: One = 'hello';
+let b = a as Two; // assignment to a less specific type
+let c = a as Three; // assignment to a more specific type
 
-type UserId = stringOrNumber;
+// cannot use this type of syntax in React <type>
+let d = <One>'world';
+let e = <string | number>'world';
 
-// Interface are Objects or Classes
-
-// Literal Types
-let myName: 'Dave'; // myName value can only be 'Dave'
-
-let userName: 'Dave' | 'John' | 'Amy';
-
-userName = 'Amy'; // Must be 'Dave', 'John', or 'Amy'
-
-// DRI - DON'T REPEAT YOURSELF
-
-// functions  para type, para type, return type
-const add = (a: number, b: number): number => a + b;
-
-const logMsg = (message: any): void => console.log(message); // Void return type is for functions that do not return anything
-
-logMsg('Hello');
-logMsg(add(2, 3));
-// logMsg(add('a', 3)); // argument type string is not assignable to argument type number
-
-let subtract = function (c: number, d: number): number {
-    return c - d;
+const addOrConcat = (a: number, b: number, c: 'add' | 'concat'): number | string => {
+    if (c === 'add') return a + b;
+    return '' + a + b;
 }
 
-logMsg(subtract(4, 2));
+let myVal: string = addOrConcat(2, 2, 'concat') as string; // assertion is that addOrConcat will return a string in this instance
 
-type mathFunction = (a: number, b:number) => number
-// interface mathFunction{
-//     (a: number, b: number): number;
-// }
+// be careful. TS does not see a problem here - but a string is returned
+let nextVal: number = addOrConcat(2, 2, 'concat') as number; // this will return a string - we know this from the function definition code block
 
-let multiply: mathFunction = function(c, d) {
-    return c * d;
-}
+// unkown is like any except you cannot use unknown anywhere
+(10 as unknown) as string; // double casting or forced casting. two assertions
 
-logMsg(multiply(1000000, 0.0034));
+// The DOM
+const img = document.querySelector('img') as HTMLImageElement; // We know that we have an HTML Image Element, as clause removes error
+const myImg = document.getElementById('#img') as HTMLImageElement; // We know this element is an Image Element
+const nextImg = <HTMLImageElement>document.getElementById('#img'); // This syntax will not work in TS React
 
-// Optional Parameters must be THE LAST IN THE LIST
-const addAll = (a: number, b: number, c?: number): number => {
-    if (typeof c !== 'undefined') {
-        return a + b + c;
-    }
-    return a + b;
-}
-
-const sumAll = (a: number, b: number, c: number = 2): number => {
-    if (typeof c !== 'undefined') {
-        return a + b + c;
-    }
-    return a + b;
-}
-
-logMsg(addAll(2, 3, 2));
-logMsg(sumAll(2, 3)); // 3rd parameter default value is 2, unless we assign a number value otherwise
-logMsg(sumAll(2, 3, 5))
-
-// Rest Parameters
-const total = (...nums: number[]): number => {
-    return nums.reduce((prev, curr) => prev + curr);
-}
-
-logMsg(total(1, 2, 3, 4, 5))
-
-// never type - not used often
-
-const createError = (errMsg: string): never => {
-    throw new Error(errMsg);
-}
-
-// infinite loops will have a never type value
-const infinite = () => {
-    let i: number = 1;
-    while(true) {
-        i++
-        if (i > 100) break; // without break statement, never type value to be returned. with break statement void type value to be returned
-    }
-}
-
-// custom type guard isNumber, isString
-const isNumber = (value: any): boolean => {
-    return typeof value === 'number'
-        ? true
-        : false;
-}
-
-const isString = (value: any): boolean => {
-    return typeof value === 'string'
-        ? true
-        : false;
-}
-
-// use of the never type
-const numberOrString = (value: number | string): string => { // return can be string | undefined
-    if (isString(value)) return 'string'
-    if (isNumber(value)) return 'number'
-    return createError('This should never happen!'); // createError returns a never type which will handle the possible error
-}
-
-logMsg(`numberOrString string: ${numberOrString('string')}`);
-logMsg(`numberOrString number: ${numberOrString(1998)}`);
+img.src
+myImg.src
