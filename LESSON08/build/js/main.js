@@ -33,3 +33,20 @@ console.log('array []', isTrue([]));
 console.log('array [1, 2, 3]', isTrue([1, 2, 3]));
 console.log('NaN value', isTrue(NaN));
 console.log('number -0', isTrue(-0));
+;
+const checkBoolValue = (arg) => {
+    if (Array.isArray(arg) && !arg.length) {
+        return { value: arg, is: false };
+    }
+    if (isObj(arg) && !Object.keys(arg).length) {
+        return { value: arg, is: false };
+    }
+    return { value: arg, is: !!arg };
+};
+;
+const processUser = (user) => {
+    // process the user with logic here
+    return user;
+};
+console.log(processUser({ id: 1, name: 'Dave' }));
+// console.log(processUser({ name: 'Dave' })); // Object literal may only specify known properties, and 'name' does not exist in type 'HasID'.

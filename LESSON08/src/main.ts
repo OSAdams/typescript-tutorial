@@ -37,3 +37,32 @@ console.log('array []', isTrue([]));
 console.log('array [1, 2, 3]', isTrue([1, 2, 3]));
 console.log('NaN value', isTrue(NaN));
 console.log('number -0', isTrue(-0));
+
+// Type check value with an interface. Function operates the same as the isTrue function above.
+
+interface BoolCheck<T> {
+    value: T,
+    is: boolean
+};
+
+const checkBoolValue = <T>(arg: T): BoolCheck<T> => { 
+    if (Array.isArray(arg) && !arg.length) { 
+        return { value: arg, is: false };
+    }
+    if (isObj(arg) && !Object.keys(arg as keyof T).length) {
+        return { value: arg, is: false };
+    } 
+    return { value: arg, is: !!arg };
+};
+
+interface HasID {
+    id: number
+};
+
+const processUser = <T extends HasID>(user: T): T => { // user has to have an id property
+    // process the user with logic here
+    return user;
+};
+
+console.log(processUser({ id: 1, name: 'Dave' }));
+// console.log(processUser({ name: 'Dave' })); // Object literal may only specify known properties, and 'name' does not exist in type 'HasID'.
