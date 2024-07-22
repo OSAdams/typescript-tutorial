@@ -7,6 +7,10 @@ export type ProductType = {
 }
 
 const initState: ProductType[] = [];
+
+// start json server command:
+// npx json-server -w data/products.json -p 3500
+
 // const initState: ProductType[] = [
 //     {
 //         "sku": "item0001",
